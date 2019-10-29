@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ItemLibrary;
+using ItemWebService.Persistency;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,12 +19,15 @@ namespace ItemWebService.Controllers
               new Item(2, "Bread", "Middle", 21),
               new Item(3, "Beer", "low", 70.5),
               new Item(4, "Soda", "High", 21.4),
-              new Item(5, "Milk", "Low", 55.8) };
+              new Item(5, "Milk", "Low", 55.8)
+            };
         // GET: api/Items
         [HttpGet]
         public IEnumerable<Item> Get()
         {
-            return items;
+            PersistencyService persistency = new PersistencyService();
+            //return items;
+            return persistency.Get();
         }
 
         // GET: api/Items/5
@@ -32,7 +36,9 @@ namespace ItemWebService.Controllers
         //[Route("{id}")]
         public Item Get(int id)
         {
-            return items.Find(i => i.Id == id);
+            // return items.Find(i => i.Id == id);
+            PersistencyService persistance = new PersistencyService();
+            return persistance.Get(id);
         }
 
         //// POST: api/Items
@@ -47,9 +53,12 @@ namespace ItemWebService.Controllers
         [HttpPost]
         public Item Post([FromBody] Item value)
         {
-            items.Add(value);
+           // items.Add(value);
             // how to make this method better? return the added item.
-            return Get(value.Id);
+           // return Get(value.Id);
+           PersistencyService persistance = new PersistencyService();
+           persistance.PostItems(value);
+           return Get(value.Id);
         }
 
         // PUT: api/Items/5
