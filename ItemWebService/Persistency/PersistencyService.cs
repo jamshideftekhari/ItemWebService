@@ -94,5 +94,32 @@ namespace ItemWebService.Persistency
                 }
             }
         }
+
+        public void PutItems( int id,Item item)
+        {
+            Item oldItem = Get(id);
+
+            if (oldItem != null)
+            {
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        using (SqlCommand cmd = conn.CreateCommand())
+                        {
+                            cmd.CommandText = "UPDATE Items SET Name=@Param1, Quality=@Param2, Quantity=@Param3 WHERE Id=@id";
+                            cmd.Parameters.AddWithValue("@id", id);
+                            cmd.Parameters.AddWithValue("@param1", item.Name);
+                            cmd.Parameters.AddWithValue("@Param2", item.Quality);
+                            cmd.Parameters.AddWithValue("@Param3", item.Quantity);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+            }
+        }
     }
 }

@@ -65,12 +65,14 @@ namespace ItemWebService.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Item value)
         {
-            Item item = Get(id);
-            if (item != null)
-            { item.Id = value.Id;
-              item.Name = value.Name;
-              item.Quality = value.Quality;
-              item.Quantity = value.Quantity; }
+            //Item item = Get(id);
+            //if (item != null)
+            //{ item.Id = value.Id;
+            //  item.Name = value.Name;
+            //  item.Quality = value.Quality;
+            //  item.Quantity = value.Quantity; }
+            PersistencyService persistance = new PersistencyService();
+            persistance.PutItems(id, value);
 
         }
 
