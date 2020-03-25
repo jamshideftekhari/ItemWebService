@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -19,6 +20,7 @@ namespace ConsumeItem
         public async Task<List<Item>> GetItemsHttpTask()
         {
             string ItemWebApi = "https://itemsrvice.azurewebsites.net/api/items";
+            //string ItemWebApi = "http://localhost:51407/api/localitems";
 
             using (HttpClient client = new HttpClient())
             {
@@ -31,7 +33,8 @@ namespace ConsumeItem
 
         public async Task<List<Item>> PostItemHttpTask()
         {
-            string EventWebApi = "https://itemsrvice.azurewebsites.net/";
+           string EventWebApi = "https://itemsrvice.azurewebsites.net/";
+           // string EventWebApi = "http://localhost:51407/PostReturn";
             Item newItem = new Item(11,"mmmmm","Low", 22);
 
             using (HttpClient client = new HttpClient())
@@ -40,20 +43,30 @@ namespace ConsumeItem
                 var content = new StringContent(newItemJson, Encoding.UTF8, "application/json");
                 client.BaseAddress = new Uri(EventWebApi);
                 client.DefaultRequestHeaders.Clear();
+                
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = client.PostAsync("api/items", content).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    var responseEvent = client.GetAsync("api/items" + newItem).Result;
-                    if (responseEvent.IsSuccessStatusCode)
-                    {
-                        // var Event = responseEvent.Content.ReadAsStreamAsync<Event>().Result;
-                        //   string saveEvent = await responseEvent.Content.ReadAsStringAsync<Event>().Result;
+                HttpResponseMessage response = await client.PostAsync("api/items", content);
 
-                    }
-                }
+                Console.WriteLine("********* An item posted to service ********");
+                Console.WriteLine("********* Response is " + response + "********");
+                response.EnsureSuccessStatusCode();
+                var httpResponseBody = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine(httpResponseBody);
+                //if (response.IsSuccessStatusCode)
+                //{
+
+                //    // var responseEvent = client.GetAsync("api/localitems" + newItem).Result;
+
+                //    //if (responseEvent.IsSuccessStatusCode)
+                //    //{
+                //    //     var Event = await responseEvent.Content.ReadAsStreamAsync<Item>().Result;
+                //    //     string saveEvent =  responseEvent.Content.ReadAsStringAsync<Item>().Result;
+
+                //    //}
+                //}
             }
 
+            Console.WriteLine("********* Get all items for verification ********");
             return await GetItemsHttpTask();
         }
 

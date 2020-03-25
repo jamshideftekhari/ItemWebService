@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ItemWebService.Controllers
+namespace ItemWebServiceF20.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -21,8 +21,7 @@ namespace ItemWebService.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            return id.ToString();
-            //return NotFound();
+            return "value";
         }
 
         // POST api/values

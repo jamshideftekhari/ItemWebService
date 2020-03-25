@@ -14,9 +14,17 @@ namespace ConsumeItem
             getConsumer.Start();
             //
             GetAllItems(getConsumer);
+            PostNewItem(getConsumer);
+           
+            
+            Console.ReadLine();
+        }
+
+        private static void PostNewItem(ItemConsumer getConsumer)
+        {
             try
             {
-                Console.WriteLine("******************POST*************");
+                Console.WriteLine("******************POST a new Item*************");
                 List<Item> items = new List<Item>();
                 Task<List<Item>> callTask = Task.Run(() => getConsumer.PostItemHttpTask());
                 callTask.Wait();
@@ -31,16 +39,13 @@ namespace ConsumeItem
                 Console.WriteLine(e);
                 throw;
             }
-           
-            
-            Console.ReadLine();
         }
 
         private static void GetAllItems(ItemConsumer getConsumer)
         {
             try
             {
-                Console.WriteLine("******************GET ALL*************");
+                Console.WriteLine("******************GET ALL items*************");
                 List<Item> items = new List<Item>();
                 Task<List<Item>> callTask = Task.Run(() => getConsumer.GetItemsHttpTask());
                 callTask.Wait();

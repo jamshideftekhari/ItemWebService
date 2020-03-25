@@ -26,8 +26,8 @@ namespace ItemWebService.Controllers
         public IEnumerable<Item> Get()
         {
             PersistencyService persistency = new PersistencyService();
-            //return items;
-            return persistency.Get();
+           // return items;
+           return persistency.Get();
         }
 
         // GET: api/Items/5
@@ -39,6 +39,7 @@ namespace ItemWebService.Controllers
             // return items.Find(i => i.Id == id);
             PersistencyService persistance = new PersistencyService();
             return persistance.Get(id);
+            
         }
 
         //// POST: api/Items
